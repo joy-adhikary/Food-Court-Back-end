@@ -8,13 +8,22 @@ from .serializer import LoginSerializer, RegisterSerializers
 
 class UserLogin(APIView):
 
+    def get(self,request):
+        allUser = LoginModel.objects.all()
+        serializer = LoginSerializer(allUser,many=True)
+        return Response({
+            'data': serializer.data},
+            status=status.HTTP_200_OK
+            )
+
     def post(self, request):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
-            user = LoginModel.objects.get(id =request.data['id'] )
-            print('user => ',user)
-            if user:
-                if user.password == request.data['password'] and user.username == request.data['username']:
+            user_object = RegistrationModel.objects.get(username =request.data['username'] )
+            print('user => ',user_object)
+            if user_object:
+                if user_object.password == request.data['password'] and user_object.username == request.data['username']:
+                    serializer.save()
                     return Response({
                         'message': 'Login sucessful'}, 
                         status=status.HTTP_200_OK

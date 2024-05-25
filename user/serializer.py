@@ -6,17 +6,17 @@ from rest_framework.response import Response
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoginModel
-        fields = '__all__'
+        fields = ['username','password']
 
 
     def validate(self, request):
         username = request['username']
         password = request['password']
 
-        if not username & password :
+        if not username and password :
             return Response({
                     'status': False,
-                    'message': 'Username or Password not set'
+                    'message': 'Username or Password is missing'
                 }, status.HTTP_400_BAD_REQUEST)
         
         return request
