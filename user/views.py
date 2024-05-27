@@ -58,7 +58,7 @@ class UserLogin(APIView):
             if check_password(password, user_object.password):  
                 return Response({
                     "message": "Login successful",
-                    "user_id": user_object.id}, 
+                    "user_id": user_object.uid}, 
                     status=status.HTTP_200_OK)
             else:
                 return Response({
